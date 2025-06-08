@@ -5,12 +5,26 @@ const NewsApi = () => {
   const[news, setnews]= useState();
   const [search, setsearch] = useState("india");
    const Api_key= "def69bcdd3e04098b9d928cd39a6acf8";
-     const  getdata= async ()=>{
-       const data = await fetch(`https://newsapi.org/v2/everything?q=${search}&from=2025-05-08&sortBy=publishedAt&apiKey=${Api_key}`)
-        const jsondata= await data.json();
-        //console.log(jsondata.articles);
-        setnews(jsondata.articles);
-     }
+     const getdata = async () => {
+  try {
+    const res = await fetch(`https://newsapi.org/v2/everything?q=${search}&from=2025-05-08&sortBy=publishedAt&apiKey=${Api_key}`, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0' // mimic browser
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const jsondata = await res.json();
+    setnews(jsondata.articles);
+  } catch (err) {
+    console.error('Fetch error:', err);
+  }
+};
+
       useEffect(()=>{
           getdata();
       },[])
