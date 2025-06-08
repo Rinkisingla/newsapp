@@ -4,30 +4,28 @@ import Cards from './Cards'
 const NewsApi = () => {
   const[news, setnews]= useState();
   const [search, setsearch] = useState("india");
-   const Api_key= "def69bcdd3e04098b9d928cd39a6acf8";
-     const getdata = async () => {
-  try {
-    const res = await fetch(`https://newsapi.org/v2/everything?q=${search}&from=2025-05-08&sortBy=publishedAt&apiKey=${Api_key}`, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0' // mimic browser
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+   const url = 'https://real-time-news-data.p.rapidapi.com/topic-news-by-section?topic=TECHNOLOGY&section=CAQiSkNCQVNNUW9JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVENJT0NBUWFDZ29JTDIwdk1ETnliSFFxQ2hJSUwyMHZNRE55YkhRb0FBKi4IACoqCAoiJENCQVNGUW9JTDIwdk1EZGpNWFlTQldWdUxVZENHZ0pKVENnQVABUAE&limit=500&country=US&lang=en';
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': 'a3122bef17mshdec0386a7efba10p1499dfjsnaf0bb0c56f32',
+      'x-rapidapi-host': 'real-time-news-data.p.rapidapi.com'
     }
+  };
 
-    const jsondata = await res.json();
-    setnews(jsondata.articles);
-  } catch (err) {
-    console.error('Fetch error:', err);
-  }
-};
+  const getdata = async () => {
+      const response = await fetch(`https://real-time-news-data.p.rapidapi.com/search?query=${search}&limit=10&time_published=anytime&country=US&lang=en`, options);
+      const jsonData = await response.json(); 
+      console.log(jsonData.data);
 
-      useEffect(()=>{
-          getdata();
-      },[])
+      // Adjust based on API structure
+      setnews(jsonData.data );
+     
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
        const handleinput =(e)=>{
           //console.log( e.target.value);
           setsearch(e.target.value);
@@ -61,11 +59,11 @@ const NewsApi = () => {
       <div>
         <span className=' text-2xl font-bold my-4 flex justify-center '> Stay Updated With the news</span>
         <div className='flex  flex-wrap gap-4 md:justify-center px-4 py-6  '>
-            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 hover:bg-red-600 transition-all duration-200 ' value="sport" onClick={ inputchange}>Sports</button>
-            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 hover:bg-red-600 transition-all duration-200 ' value="politics" onClick={ inputchange} >Politics</button>
-            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 hover:bg-red-600 transition-all duration-200 ' value="health" onClick={ inputchange}>Health</button>
-            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 hover:bg-red-600 transition-all duration-200 ' value="entertainment" onClick={ inputchange}>Entertainment</button>
-            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 hover:bg-red-600 transition-all duration-200 ' value="technology" onClick={ inputchange} >Technology</button>
+            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 ' value="sport" onClick={ inputchange}>Sports</button>
+            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 ' value="politics" onClick={ inputchange} >Politics</button>
+            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 ' value="health" onClick={ inputchange}>Health</button>
+            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 ' value="entertainment" onClick={ inputchange}>Entertainment</button>
+            <button className='bg-red-400 rounded-xl md:px-8 my-5 px-6 py-2 ' value="technology" onClick={ inputchange} >Technology</button>
       
         </div>
       </div>
